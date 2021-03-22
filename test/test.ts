@@ -34,28 +34,24 @@ test('getWriter returns correct value for PDF', (t) => {
 })
 
 test('getWriter returns correct value for HTML', (t) => {
-  // Simulate a real filename and snip the extension like we would in the main function
   const fileext = path.extname('/test/path/to/file.html')
   const writer = getWriter(fileext)
   t.true(writer === 'html')
 })
 
 test('getWriter returns correct value for DOCX', (t) => {
-  // Simulate a real filename and snip the extension like we would in the main function
   const fileext = path.extname('/test/path/to/file.docx')
   const writer = getWriter(fileext)
   t.true(writer === 'docx')
 })
 
 test('getWriter returns correct value for PPTX', (t) => {
-  // Simulate a real filename and snip the extension like we would in the main function
   const fileext = path.extname('/test/path/to/file.pptx')
   const writer = getWriter(fileext)
   t.true(writer === 'pptx')
 })
 
 test('getWriter returns undefined for unknown format', (t) => {
-  // Simulate a real filename and snip the extension like we would in the main function
   const fileext = path.extname('/test/path/to/file.potato')
   const writer = getWriter(fileext)
   t.true(writer === undefined)
