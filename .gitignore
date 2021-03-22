@@ -1,3 +1,4 @@
 node_modules/*
 # Don't pull in any of the typescript output!
 dist/*
+.nyc_output/

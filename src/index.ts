@@ -81,8 +81,11 @@ function assignKeys(obj: Record<string, unknown>): defaultsFile {
         const variableValue = variableKeys[variableKey]
         variableValues.variables[variableKey] = variableValue
       }
-    } else if (value && typeof value === typeof obj) {
-      assignKeys(value as Record<string, unknown>)
+    } else if (typeof value === typeof obj) {
+      const objKeys = assignKeys(value as Record<string, unknown>)
+      for (const objKey in objKeys) {
+        properties[objKey] = objKeys[objKey]
+      }
     } else {
       properties[key] = value
     }
@@ -134,13 +137,13 @@ export function processKeys(keys: Record<string, unknown>): defaultsFile {
   const flatKeys: defaultsFile = assignKeys(keys)
   for (const key in flatKeys) {
     const value = flatKeys[key]
-    if (isDefaultsKey(key) && !isSpecialKey(key)) {
+    if (key === ('table-of-contents' || 'toc')) {
+      // This must be set as a root key to be consistent across formats.
+      processedKeys[key] = value
+    } else if (isDefaultsKey(key) && !isSpecialKey(key)) {
       processedKeys[key] = value
     } else if (isSpecialKey(key)) {
       metadataKeys.metadata[key] = value
-    } else if (key === ('table-of-contents' || 'toc')) {
-      // This must be set as a root key to be consistent across formats.
-      processedKeys[key] = value
     } else {
       // Variables values aren't escaped, so we should use them to fill in template variables, rather than metadata.
       variablesKeys.variables[key] = value
@@ -222,7 +225,7 @@ export default function makeDefaultsFile(
     defaultsFileContents = processKeys(frontmatter)
   }
 
-  // if we explicitly passed outputFile to the function we'll assume that it should take precedence.
+  // An explicitly passed outputFile should override user input to prevent abuse of pandoc
   if (outputFile) {
     defaultsFileContents['output-file'] = path.resolve(outputFile)
   }

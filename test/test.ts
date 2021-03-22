@@ -28,7 +28,6 @@ test('Valid Pandoc defaults file passes JSONSchema validation', (t) => {
 })
 
 test('getWriter returns correct value for PDF', (t) => {
-  // Simulate a real filename and snip the extension like we would in the main function
   const fileext = path.extname('/test/path/to/file.pdf')
   const writer = getWriter(fileext)
   t.true(writer === 'pdf')
@@ -240,4 +239,40 @@ test('Keys that do not collide are preserved when properties merged', (t) => {
     output.variables?.title === 'Custom Title' &&
       output.variables['title-page-background'] === '/working/resources/template_resources/lackadaisical_title.pdf'
   )
+})
+
+test('Defaults keys are passed through', (t) => {
+  const additionalConfig = {
+    standalone: true,
+    'self-contained': false,
+  }
+  const output = makeDefaultsFile({}, { additionalConfig: additionalConfig })
+  t.true(output.standalone === true && output['self-contained'] === false)
+})
+
+test('Convoluted objects are parsed successfully', (t) => {
+  const additionalConfig = {
+    level1: {
+      level2: {
+        standalone: true,
+        'self-contained': false,
+      },
+    },
+  }
+  const output = makeDefaultsFile({}, { additionalConfig: additionalConfig })
+  t.true(output.standalone === true && output['self-contained'] === false)
+})
+
+test('toc outputs as root key', (t) => {
+  const output = makeDefaultsFile({ object: { toc: true, 'table-of-contents': false } })
+  t.true(output['toc'] === true && output['table-of-contents'] === false)
+})
+
+test('Project settings can be passed without additionalConfig', (t) => {
+  const additionalConfig = {
+    standalone: true,
+    'self-contained': false,
+  }
+  const output = makeDefaultsFile({}, { projectSettings: additionalConfig })
+  t.true(output.standalone === true && output['self-contained'] === false)
 })
