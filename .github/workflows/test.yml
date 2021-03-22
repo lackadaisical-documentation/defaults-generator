@@ -1,0 +1,24 @@
+name: Test
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        # Always fetch the branch that triggered the event (develop or master)
+        ref: ${{ github.ref }}
+    - name: Setup NodeJS 14.x
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+    - name: Install dependencies
+      # Simply use one single command for all that stuff and chain using &&
+      run: yarn install --frozen-lockfile
+    - name: Build package
+      run: yarn build
+    - name: Run unit tests
+      run: yarn test
