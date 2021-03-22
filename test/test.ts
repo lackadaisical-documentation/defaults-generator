@@ -263,11 +263,6 @@ test('Convoluted objects are parsed successfully', (t) => {
   t.true(output.standalone === true && output['self-contained'] === false)
 })
 
-test('toc outputs as root key', (t) => {
-  const output = makeDefaultsFile({ object: { toc: true, 'table-of-contents': false } })
-  t.true(output['toc'] === true && output['table-of-contents'] === false)
-})
-
 test('Project settings can be passed without additionalConfig', (t) => {
   const additionalConfig = {
     standalone: true,
