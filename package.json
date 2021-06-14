@@ -1,6 +1,6 @@
 {
   "name": "@lackadaisical/defaults-generator",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "engines": {
     "node": ">=14.0.0"
   },
@@ -15,8 +15,8 @@
   "license": "GPL-3.0-or-later",
   "private": false,
   "dependencies": {
-    "ajv": "^7.0.3",
-    "ajv-formats": "^1.5.1",
+    "ajv": "^8.6.0",
+    "ajv-formats": "^2.0.0",
     "lodash": "^4.17.20",
     "path": "^0.12.7"
   },
@@ -55,7 +55,8 @@
     ],
     "require": [
       "ts-node/register"
-    ]
+    ],
+    "timeout": "2m"
   },
   "type": "commonjs",
   "files": [
