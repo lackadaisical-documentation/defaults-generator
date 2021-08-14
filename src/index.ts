@@ -167,7 +167,7 @@ class ValidationError extends Error {
  *
  */
 export function validateAgainstSchema(properties: Record<string, unknown> | defaultsFile): void {
-  const ajv = new Ajv()
+  const ajv = new Ajv({ allErrors: true })
   addFormats(ajv)
   const validator = ajv.compile(defaultsSchema)
   if (!validator(properties)) {
